@@ -1,0 +1,27 @@
+.editor {
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    width: 92%;
+    max-width: 100%;
+    margin: 10px 4%;
+}
+
+.editor textarea {
+    background-color: #ffffff;
+    border: 2px solid #000000;
+    font-family: Consolas,"Microsoft Yahei","Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    padding: 10px;
+    height: 100vh;
+    resize: none;
+}
+
+.editor .date {
+    display: flex;
+    justify-content: space-between;
+    color: #5e5e5e;
+    font-family: Consolas,"Microsoft Yahei","Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    padding-bottom: 10px;
+}

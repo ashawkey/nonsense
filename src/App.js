@@ -1,24 +1,60 @@
 import React from 'react';
-import logo from './logo.svg';
+import {Switch, Route, Link, HashRouter} from "react-router-dom";
+import ScrollToTop from 'react-scroll-up';
 import './App.css';
+
+import Home from "./Home";
+import Editor from "./Editor";
+import SearchBar from "./SearchBar";
+import SearchResults from "./SearchResults";
+
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <HashRouter>
+        <div className="header"> 
+          <div className='title'> <Link to="/"> NoNSeNSe </Link> </div>
+          <div className="new-button"> <Link to={"/edit/-1"}> + </Link> </div>
+          <div className='search-bar'> <SearchBar/> </div>
+        </div>
+        <div className="content">
+          <hr className="fancy-line" />
+          <Switch>
+            {/* Home page */}
+            <Route exact path="/">
+              <Home />
+            </Route>
+            {/* Search page */}
+            <Route path="/search/:keyword">
+              <SearchResults />
+            </Route>
+            {/* Edit page */}
+            <Route path="/edit/:nid">
+              <Editor />
+            </Route>
+            {/* fallback */}
+            <Route path="*">
+              <NoMatch />
+            </Route>
+          </Switch>
+          <hr className="fancy-line" />
+        </div>
+        <ScrollToTop showUnder={160}>
+          <span className="icon icon-circle-up" />
+        </ScrollToTop>
+        <div className="footer"> 
+          @ hawkey
+        </div>
+      </HashRouter>
+    </div>
+  );
+}
+
+function NoMatch() {
+  return (
+    <div className="no-match">
+      <p> No match! </p>
     </div>
   );
 }

@@ -1,0 +1,40 @@
+.flow-item {
+    border: 2px solid #000000;
+    background-color: #ffffff;
+    border-radius: 0px;
+    margin: 10px 10px;
+    padding: 10px;
+    box-shadow: 2px 2px 1px 0px rgb(255, 160, 242);
+    transition: all 0.2s ease-in-out;
+}
+
+.flow-item:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 5px 5px 3px 0px rgb(255, 160, 242);
+}
+
+.flow-item a {
+    text-decoration: none;
+    color: #000000;
+}
+
+.flow-item a:hover {
+    color: #770086;
+}
+
+.flow-item .date {
+    color: #5e5e5e;
+    font-family: Consolas,"Microsoft Yahei","Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 12px;
+}
+
+.flow-item .content {
+    font-family: Consolas,"Microsoft Yahei","Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+}
+
+.flow-item hr {
+    color: #b1b1b1;
+    font-size: 1.5em;
+    margin: 0 auto;
+}

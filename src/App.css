@@ -1,38 +1,69 @@
-.App {
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  margin: 10px 10px;
+  padding: 10px;
+}
+
+.title a {
+  font-family: Consolas,"Microsoft Yahei","Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-decoration: none;
+  color: #000000; 
+  font-size: 25px; 
+  transition: all 0.2s ease-in-out;
+}
+
+.title a:hover {
+  color: #770086;
+  text-shadow: 6px 6px 4px rgb(255, 160, 242);
+}
+
+.new-button a {
+  font-family: Consolas,"Microsoft Yahei","Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-decoration: none;
+  color: #000000; 
+  font-size: 30px; 
+  transition: all 0.2s ease-in-out;
+}
+
+.new-button a:hover {
+  transform: rotate(90deg);
+  color: #770086;
+  text-shadow: 6px 6px 4px rgb(255, 160, 242);
+}
+
+.search-bar input {
+  height: 25px;
+  border: 2px solid #ffffff;
+  background-color: white;
+  color: #000000; 
+  font-family: Consolas,"Microsoft Yahei","Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  transition: all 0.2s ease-in-out;
+}
+
+.search-bar input:hover {
+  border: 2px solid #000000;
+  color: #770086;
+}
+
+
+.footer {
+  color: #616138; 
+  font-family: Georgia;
+  font-size: 15px; 
+  font-weight: normal; 
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+@media only screen and (max-width: 600px) {
+  .header {
+    flex-direction: column;
+    justify-content: center;
   }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+  .search-bar input {
+    text-align: center;
   }
 }
