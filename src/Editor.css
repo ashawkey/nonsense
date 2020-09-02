@@ -24,4 +24,11 @@
     font-family: Consolas,"Microsoft Yahei","Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 12px;
     padding-bottom: 10px;
+    transition: all 0.2s ease-in-out;
+}
+
+
+.editor .date .delete-button:hover {
+    color: #770086;
+    text-shadow: 3px 3px 2px rgb(255, 160, 242);
 }

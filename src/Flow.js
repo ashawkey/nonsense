@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import './Flow.css';
-import {convertTime, padNumber} from './utils'
+import {convertTime, padNumber, truncateString} from './utils'
 
 
 function Flow(props) {
@@ -21,11 +21,13 @@ function FlowItem(props) {
     <div className="flow-item">
       <Link to={"/edit/"+props.value[0]}> 
         <div className="date"> 
-          {padNumber(props.value[0], 6)+' '+convertTime(props.value[2])} 
+          <span> {padNumber(props.value[0], 6)} </span>
+          <span> {' ' + convertTime(props.value[2])} </span>
+          <span> {' ' + convertTime(props.value[1])} </span>
         </div>
         <hr />
         <div className="content">
-          {props.value[3]}
+          {truncateString(props.value[3], 300)}
         </div>
       </Link>
     </div>

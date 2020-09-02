@@ -6,11 +6,21 @@ function convertTime(timestamp) {
   var h = date.getHours();
   var m = date.getMinutes();
   return Y+'-'+M+'-'+D+' '+(h<=9? '0'+h : h)+':'+(m<=9? '0'+m : m);
+  //return Y+'-'+M+'-'+D;
 }
 
-function padNumber(num, size) {
+function padNumber(num, length) {
   var s = "000000000" + num.toString();
-  return s.substr(s.length-size);
+  return s.substr(s.length - length);
 }
 
-export {convertTime, padNumber};
+function truncateString(str, length) {
+  if (str.length > length) {
+    return str.substring(0, length) + "......";
+  }
+  else {
+    return str;
+  }
+}
+
+export {convertTime, padNumber, truncateString};

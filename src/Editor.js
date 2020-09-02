@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useParams} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import {Prompt} from "react-router";
 import {convertTime, padNumber} from './utils'
 import {API_ROOT} from "./const";
@@ -13,6 +14,8 @@ function Editor() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState('saved');
   const [id, setId] = useState('');
+
+  const history = useHistory();
   const {nid} = useParams();
 
   // load text if exists else create new
@@ -25,6 +28,8 @@ function Editor() {
       ).then(
         res => {
           setId(res['nid'].toString());
+          setCtime(res['ctime']);
+          setMtime(res['ctime']);
           setText('');
           setLoading(false);
         }
@@ -103,6 +108,24 @@ function Editor() {
     setSaving('unsaved');
   }
 
+  function handleDelete(event) {
+    event.preventDefault();
+    if (window.confirm('Are you sure to delete?')) {
+      let formData = new FormData();
+      formData.append('nid', id);
+      fetch(API_ROOT+"/delete", {
+        method: "POST",
+        body: formData,
+      }).then(
+        res => res.json()
+      ).then(
+        res => {
+          history.push("/");
+        }
+      );
+    }
+  }
+
   if (loading) {
     return (
       <div className="loading">
@@ -114,8 +137,10 @@ function Editor() {
   return (
       <div className="editor">
         <div className='date'>
-          <span> {padNumber(id, 6) + ' ' + convertTime(ctime) + ' ('+convertTime(ctime)+')'} </span>
-          <span> {saving} </span>
+          | <span> {padNumber(id, 6)} </span>
+          | <span> {convertTime(mtime)} </span>
+          | <span onClick={handleDelete} className='delete-button'> delete </span>
+          | <span> {saving} </span> |
         </div>
         <textarea onChange={handleChange} value={text} />
         <Prompt message='Draft unsaved, are you sure to leave?' when={saving === 'failed' || saving === 'unsaved'}/>
