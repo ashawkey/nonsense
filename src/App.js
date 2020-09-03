@@ -48,7 +48,7 @@ function App() {
           <hr className="fancy-line" />
         </div>
         <ScrollToTop showUnder={160}>
-          <span className="icon icon-circle-up" />
+          <span className='up-arrow'> ⮭ </span>
         </ScrollToTop>
         <div className="footer"> 
           @ <a href='https://github.com/ashawkey'> hawkey </a>

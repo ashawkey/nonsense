@@ -4,7 +4,7 @@ React Frontend for Nonsense.
 
 Hawia Project.
 
-Demo: https://hawia.xyz/nonsense/
+**Demo**: https://hawia.xyz/nonsense/
 
 ### Home page
 

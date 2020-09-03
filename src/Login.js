@@ -6,7 +6,7 @@ function Login() {
   const [token, setToken] = useState('');
 
   useEffect(() => {
-    setToken(localStorage['nonsense_token'] || 'nonsense');
+    setToken(localStorage['nonsense_token'] || '');
   }, []);
 
   function handleTokenChange(event) {
@@ -21,7 +21,7 @@ function Login() {
     }
     else {
       localStorage['nonsense_token'] = 'nonsense';
-      alert("Hello.");
+      alert("Hello, nonsense!");
     }
   }
     

@@ -20,9 +20,7 @@ function Home(){
 
   if (loading) {
     return (
-      <div className="loading">
-        <span className="icon icon-hour-glass" />
-      </div>
+      <div className="loading"> ☪ </div>
     );
   }
 
