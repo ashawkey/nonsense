@@ -21,7 +21,7 @@ function Login() {
     }
     else {
       localStorage['nonsense_token'] = 'nonsense';
-      alert("Hello, nonsense!");
+      alert("Hello.");
     }
   }
     
