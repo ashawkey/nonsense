@@ -6,7 +6,7 @@
   margin: 10px 10px;
 }
 
-.title a {
+.header a {
   font-family: Consolas,"Microsoft Yahei","Helvetica Neue", Helvetica, Arial, sans-serif;
   text-decoration: none;
   color: #000000; 
@@ -14,27 +14,22 @@
   transition: all 0.2s ease-in-out;
 }
 
-.title a:hover {
+.header a:hover {
   color: #770086;
   text-shadow: 6px 6px 4px rgb(255, 160, 242);
 }
 
 .new-button a {
-  font-family: Consolas,"Microsoft Yahei","Helvetica Neue", Helvetica, Arial, sans-serif;
-  text-decoration: none;
-  color: #000000; 
-  font-size: 30px; 
-  transition: all 0.2s ease-in-out;
+  font-size: 28px;
 }
 
-.new-button a:hover {
-  color: #770086;
-  text-shadow: 6px 6px 4px rgb(255, 160, 242);
+.login-button a {
+  font-size: 25px;
 }
 
 .search-bar input {
   height: 25px;
-  border: 2px solid #ffffff;
+  border: 2px solid #000000;
   background-color: white;
   color: #000000; 
   font-family: Consolas,"Microsoft Yahei","Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -46,6 +41,7 @@
 .search-bar input:hover {
   border: 2px solid #000000;
   color: #770086;
+  box-shadow: 3px 3px 3px rgb(255, 160, 242);
 }
 
 
@@ -55,6 +51,11 @@
   font-size: 15px; 
   font-weight: normal; 
   text-align: center;
+  margin: 10px auto;
+}
+
+.footer a {
+  text-decoration: none;
 }
 
 @media only screen and (max-width: 600px) {
@@ -66,10 +67,13 @@
     margin: 5px;
   }
   .title a {
-    font-size: 15px;
+    font-size: 18px;
   }
   .new-button a {
     font-size: 20px;
+  }
+  .login-button a {
+    font-size: 18px;
   }
   .search-bar input {
     height: 20px;

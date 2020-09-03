@@ -23,4 +23,8 @@ function truncateString(str, length) {
   }
 }
 
-export {convertTime, padNumber, truncateString};
+function getToken() {
+  return localStorage['nonsense_token'] || 'nonsense';
+}
+
+export {convertTime, padNumber, truncateString, getToken};

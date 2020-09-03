@@ -1,9 +1,11 @@
 import React from 'react';
 import {Switch, Route, Link, HashRouter} from "react-router-dom";
+
 import ScrollToTop from 'react-scroll-up';
 import './App.css';
 
 import Home from "./Home";
+import Login from "./Login";
 import Editor from "./Editor";
 import SearchBar from "./SearchBar";
 import SearchResults from "./SearchResults";
@@ -15,12 +17,17 @@ function App() {
       <HashRouter>
         <div className="header"> 
           <div className='title'> <Link to="/"> NoNSeNSe </Link> </div>
-          <div className="new-button"> <Link to={"/edit/-1"}> + </Link> </div>
+          <div className="new-button"> <Link to={"/edit/-1"}> ✛ </Link> </div>
+          <div className="login-button"> <Link to={"/login"}> ❖ </Link> </div>
           <div className='search-bar'> <SearchBar/> </div>
         </div>
         <div className="content">
           <hr className="fancy-line" />
           <Switch>
+            {/* Login page */}
+            <Route exact path="/login">
+              <Login />
+            </Route>
             {/* Home page */}
             <Route exact path="/">
               <Home />
@@ -44,7 +51,7 @@ function App() {
           <span className="icon icon-circle-up" />
         </ScrollToTop>
         <div className="footer"> 
-          @ hawkey
+          @ <a href='https://github.com/ashawkey'> hawkey </a>
         </div>
       </HashRouter>
     </div>

@@ -14,8 +14,10 @@ function SearchBar() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    history.push("/search/"+keyword);
-    setKeyword('') // clear input
+    if (keyword !== '') {
+      history.push("/search/"+keyword);
+      setKeyword('') // clear input
+    }
   }
 
   return (

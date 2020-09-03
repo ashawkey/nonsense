@@ -1,0 +1,33 @@
+.login-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    font-family: Consolas,"Microsoft Yahei","Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 20px;
+    max-width: 250px;
+    margin: 0 auto;
+}
+
+.login-form .title {
+    text-align: center;
+    margin: 10px 0;
+}
+
+.login-form input {
+    height: 25px;
+    border: 2px solid #000000;
+    background-color: white;
+    color: #000000; 
+    font-family: Consolas,"Microsoft Yahei","Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    text-align: center;
+    margin: 0 0 10px 0;
+    transition: all 0.2s ease-in-out;
+  }
+  
+.login-form input:hover {
+    border: 2px solid #000000;
+    color: #770086;
+    box-shadow: 3px 3px 3px rgb(255, 160, 242);
+}

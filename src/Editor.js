@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {useParams} from "react-router-dom";
 import {useHistory} from "react-router-dom";
 import {Prompt} from "react-router";
-import {convertTime, padNumber} from './utils'
+import {convertTime, padNumber, getToken} from './utils'
 import {API_ROOT} from "./const";
 import "./Editor.css"
 
@@ -21,9 +21,7 @@ function Editor() {
   // load text if exists else create new
   useEffect(() => {
     if (nid === '-1') {
-      fetch(API_ROOT+"/post", {
-        method: "POST",
-      }).then(
+      fetch(API_ROOT+"/post?token="+getToken()).then(
         res => res.json()
       ).then(
         res => {
@@ -75,14 +73,12 @@ function Editor() {
   }
 
   function checkSave() {
-    if (saving === 'unsaved' || saving === 'failed') {
+    if (saving === 'unsaved') {
       setSaving('saving');
 
       let formData = new FormData();
       formData.append('nid', id);
       formData.append('body', text);
-
-      console.log('save', id, text);
 
       fetch(API_ROOT+"/update", {
         method: "POST",
