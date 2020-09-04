@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/nonsense/static/css/main.66f45604.chunk.css",
+    "main.css": "/nonsense/static/css/main.00e2d0b5.chunk.css",
     "main.js": "/nonsense/static/js/main.46c7943b.chunk.js",
     "main.js.map": "/nonsense/static/js/main.46c7943b.chunk.js.map",
     "runtime-main.js": "/nonsense/static/js/runtime-main.e502844a.js",
@@ -8,15 +8,15 @@
     "static/js/2.c71d5389.chunk.js": "/nonsense/static/js/2.c71d5389.chunk.js",
     "static/js/2.c71d5389.chunk.js.map": "/nonsense/static/js/2.c71d5389.chunk.js.map",
     "index.html": "/nonsense/index.html",
-    "precache-manifest.2e45c03b3d325e5d9bfb9e5ea79b1d80.js": "/nonsense/precache-manifest.2e45c03b3d325e5d9bfb9e5ea79b1d80.js",
+    "precache-manifest.ba858d05b4f5d2d71c7cf8f5d657b5f0.js": "/nonsense/precache-manifest.ba858d05b4f5d2d71c7cf8f5d657b5f0.js",
     "service-worker.js": "/nonsense/service-worker.js",
-    "static/css/main.66f45604.chunk.css.map": "/nonsense/static/css/main.66f45604.chunk.css.map",
+    "static/css/main.00e2d0b5.chunk.css.map": "/nonsense/static/css/main.00e2d0b5.chunk.css.map",
     "static/js/2.c71d5389.chunk.js.LICENSE.txt": "/nonsense/static/js/2.c71d5389.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.e502844a.js",
     "static/js/2.c71d5389.chunk.js",
-    "static/css/main.66f45604.chunk.css",
+    "static/css/main.00e2d0b5.chunk.css",
     "static/js/main.46c7943b.chunk.js"
   ]
 }
