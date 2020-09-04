@@ -5,6 +5,8 @@ import {Prompt} from "react-router";
 import {convertTime, padNumber, getToken} from './utils'
 import {API_ROOT} from "./const";
 import "./Editor.css"
+import { func } from 'prop-types';
+import MarkdownRender from './Markdown';
 
 
 function Editor() {
@@ -13,25 +15,20 @@ function Editor() {
   const [mtime, setMtime] = useState(0);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState('saved');
-  const [id, setId] = useState('');
+  const [preview, setPreview] = useState(false);
+  const [id, setId] = useState('-1');
 
   const history = useHistory();
   const {nid} = useParams();
 
-  // load text if exists else create new
+  // load text if exists else load empty template
   useEffect(() => {
     if (nid === '-1') {
-      fetch(API_ROOT+"/post?token="+getToken()).then(
-        res => res.json()
-      ).then(
-        res => {
-          setId(res['nid'].toString());
-          setCtime(res['ctime']);
-          setMtime(res['ctime']);
-          setText('');
-          setLoading(false);
-        }
-      );
+      setId(nid);
+      setCtime(Date.now());
+      setMtime(Date.now());
+      setText('');
+      setLoading(false);
     }
     else {
       setId(nid); // asynchronous, use id in this block will cause error. [fix1: add id to dependence]
@@ -76,25 +73,51 @@ function Editor() {
     if (saving === 'unsaved') {
       setSaving('saving');
 
-      let formData = new FormData();
-      formData.append('nid', id);
-      formData.append('body', text);
+      if (id === '-1') {
+        // create new 
+        let formData = new FormData();
+        formData.append('token', getToken());
+        formData.append('body', text);
 
-      fetch(API_ROOT+"/update", {
-        method: "POST",
-        body: formData,
-      }).then(
-        res => res.json()
-      ).catch(
-        error => {
-          setSaving('failed');
-          console.error('Update error: ', error)
-        }
-      ).then(
-        res => {
-          setSaving('saved');
-        }
-      );
+        fetch(API_ROOT+"/post", {
+          method: "POST",
+          body: formData,
+        }).then(
+          res => res.json()
+        ).catch(
+          error => {
+            setSaving('failed');
+            console.error('Update error: ', error)
+          }
+        ).then(
+          res => {
+            setId(res['nid'].toString());
+            setSaving('saved');
+          }
+        );
+
+      }
+      else {
+        let formData = new FormData();
+        formData.append('nid', id);
+        formData.append('body', text);
+  
+        fetch(API_ROOT+"/update", {
+          method: "POST",
+          body: formData,
+        }).then(
+          res => res.json()
+        ).catch(
+          error => {
+            setSaving('failed');
+            console.error('Update error: ', error)
+          }
+        ).then(
+          res => {
+            setSaving('saved');
+          }
+        );
+      }
     }
   }
 
@@ -102,6 +125,11 @@ function Editor() {
     event.preventDefault();
     setText(event.target.value);
     setSaving('unsaved');
+  }
+
+  function handlePreview(event) {
+    event.preventDefault();
+    setPreview(!preview);
   }
 
   function handleDelete(event) {
@@ -131,12 +159,13 @@ function Editor() {
   return (
       <div className="editor">
         <div className='date'>
-          | <span> {padNumber(id, 6)} </span>
+          | <span> {(id === '-1') ? 'new' : padNumber(id, 6)} </span>
           | <span> {convertTime(mtime)} </span>
+          | <span onClick={handlePreview} className='preview-button'> {preview ? "view" : "edit"} </span>
           | <span onClick={handleDelete} className='delete-button'> delete </span>
           | <span> {saving} </span> |
         </div>
-        <textarea onChange={handleChange} value={text} />
+        {preview ? <MarkdownRender className="markdown" source={text}/> : <textarea onChange={handleChange} value={text} />}
         <Prompt message='Draft unsaved, are you sure to leave?' when={saving === 'failed' || saving === 'unsaved'}/>
       </div>
   );

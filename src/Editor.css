@@ -17,6 +17,20 @@
     resize: none;
 }
 
+.markdown {
+    background-color: #ffffff;
+    border: 2px solid #000000;
+    font-family: Consolas,"Microsoft Yahei","Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    padding: 10px;
+    height: 100vh;
+    resize: none;
+}
+
+.markdown p {
+    margin: 0 0;
+}
+
 .editor .date {
     display: flex;
     justify-content: space-between;
@@ -27,8 +41,12 @@
     transition: all 0.2s ease-in-out;
 }
 
+.delete-button:hover {
+    color: #770086;
+    text-shadow: 3px 3px 2px rgb(255, 160, 242);
+}
 
-.editor .date .delete-button:hover {
+.preview-button:hover {
     color: #770086;
     text-shadow: 3px 3px 2px rgb(255, 160, 242);
 }
