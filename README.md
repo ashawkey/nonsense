@@ -1,10 +1,16 @@
-# Nonsense
+# NoNSeNSe
 
-React Frontend for Nonsense.
+React Frontend for Nonsense, a minimal online note App.
 
-Hawia Project.
+Hosted by [listener](https://github.com/ashawkey/listener.git) @ hawia project.
 
-**Demo**: https://hawia.xyz/nonsense/
+
+
+**Online Demo**: https://hawia.xyz/nonsense/
+
+(You should create your own channel in ❖ first)
+
+
 
 ### Home page
 
