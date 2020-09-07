@@ -5,7 +5,6 @@ import {Prompt} from "react-router";
 import {convertTime, padNumber, getToken} from './utils'
 import {API_ROOT} from "./const";
 import "./Editor.css"
-import { func } from 'prop-types';
 import MarkdownRender from './Markdown';
 
 
@@ -15,7 +14,7 @@ function Editor() {
   const [mtime, setMtime] = useState(0);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState('saved');
-  const [preview, setPreview] = useState(false);
+  const [state, setState] = useState(0); // 0 = edit, 1 = view
   const [id, setId] = useState('-1');
 
   const history = useHistory();
@@ -25,8 +24,8 @@ function Editor() {
   useEffect(() => {
     if (nid === '-1') {
       setId(nid);
-      setCtime(Date.now());
-      setMtime(Date.now());
+      setCtime(Date.now() / 1000);
+      setMtime(Date.now() / 1000);
       setText('');
       setLoading(false);
     }
@@ -40,6 +39,7 @@ function Editor() {
             setCtime(res['content'][0]);
             setMtime(res['content'][1]);
             setText(res['content'][2]);
+            setState(res['content'][3]);
             setLoading(false);
           }
         }
@@ -47,6 +47,7 @@ function Editor() {
     }
   }, [nid]);
 
+  // check save every 1s
   useEffect(() => {
     const saver = setInterval(checkSave, 1000);
     return () => {
@@ -54,6 +55,7 @@ function Editor() {
     };
   });
 
+  // leave tab warning
   useEffect(() => {
     window.addEventListener('beforeunload', handleBeforeunload);
     return () => {
@@ -62,7 +64,7 @@ function Editor() {
   });
 
   function handleBeforeunload(event) {
-    if (saving === 'failed' || saving === 'unsaved') {
+    if (saving === 'failed' || saving === 'unsaved' || saving === 'saving') {
       event.preventDefault();
       // chrome has banned custom message, so this will not show.
       return event.returnValue = 'Draft unsaved';
@@ -74,10 +76,11 @@ function Editor() {
       setSaving('saving');
 
       if (id === '-1') {
-        // create new 
+        // post new 
         let formData = new FormData();
         formData.append('token', getToken());
         formData.append('body', text);
+        formData.append('state', state);
 
         fetch(API_ROOT+"/post", {
           method: "POST",
@@ -87,7 +90,7 @@ function Editor() {
         ).catch(
           error => {
             setSaving('failed');
-            console.error('Update error: ', error)
+            console.error('Post error: ', error)
           }
         ).then(
           res => {
@@ -98,9 +101,11 @@ function Editor() {
 
       }
       else {
+        // update current
         let formData = new FormData();
         formData.append('nid', id);
         formData.append('body', text);
+        formData.append('state', state);
   
         fetch(API_ROOT+"/update", {
           method: "POST",
@@ -129,7 +134,8 @@ function Editor() {
 
   function handlePreview(event) {
     event.preventDefault();
-    setPreview(!preview);
+    setState(1 - state);
+    setSaving('unsaved');
   }
 
   function handleDelete(event) {
@@ -150,6 +156,32 @@ function Editor() {
     }
   }
 
+  // fix tab from unfocus to insert 4 spaces
+  function textarea_onkeydown_fixtab(event) {
+    if (event.keyCode === 9) {
+      event.preventDefault();
+      setText(text.substring(0, event.target.selectionStart) + '    ' + text.substring(event.target.selectionEnd));
+    }
+  }
+
+  function render_state_button(state) {
+    if (state === 0) return "edit";
+    else if (state === 1) return "view";
+    else return "error";
+  }
+
+  function render_saving_button(saving) {
+    if (saving === 'failed') return (<span style={{color: 'red'}}> failed </span>);
+    else if (saving === 'saved') return (<span style={{color: 'green'}}> saved </span>);
+    else return saving;
+  }
+
+  function render_editor(state) {
+    if (state === 0) return (<textarea onKeyDown={textarea_onkeydown_fixtab} onChange={handleChange} value={text} />);
+    else if (state === 1) return (<MarkdownRender className="markdown" source={text}/>);
+    else return "error";
+  }
+
   if (loading) {
     return (
       <div className="loading"> ☪ </div>
@@ -161,12 +193,12 @@ function Editor() {
         <div className='date'>
           | <span> {(id === '-1') ? 'new' : padNumber(id, 6)} </span>
           | <span> {convertTime(mtime)} </span>
-          | <span onClick={handlePreview} className='preview-button'> {preview ? "view" : "edit"} </span>
+          | <span onClick={handlePreview} className='state-button'> {render_state_button(state)} </span>
           | <span onClick={handleDelete} className='delete-button'> delete </span>
-          | <span> {saving} </span> |
+          | <span> {render_saving_button(saving)} </span> |
         </div>
-        {preview ? <MarkdownRender className="markdown" source={text}/> : <textarea onChange={handleChange} value={text} />}
-        <Prompt message='Draft unsaved, are you sure to leave?' when={saving === 'failed' || saving === 'unsaved'}/>
+        {render_editor(state)}
+        <Prompt message='Draft unsaved, are you sure to leave?' when={saving === 'failed' || saving === 'unsaved' || saving === 'saving'}/>
       </div>
   );
 }

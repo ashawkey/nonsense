@@ -32,6 +32,7 @@
 .flow-item .content {
     font-family: Consolas,"Microsoft Yahei","Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 16px;
+    overflow-wrap: break-word;
 }
 
 .flow-item hr {

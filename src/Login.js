@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from 'react';
+import {useHistory} from "react-router-dom";
 import "./Login.css";
 
 function Login() {
 
   const [token, setToken] = useState('');
+  const history = useHistory();
 
   useEffect(() => {
     setToken(localStorage['nonsense_token'] || '');
@@ -23,6 +25,7 @@ function Login() {
       localStorage['nonsense_token'] = 'nonsense';
       alert("Hello, nonsense!");
     }
+    history.push('/');
   }
     
   return (
