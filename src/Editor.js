@@ -33,7 +33,7 @@ function Editor() {
     }
     else {
       setId(nid); // asynchronous, use id in this block will cause error. [fix1: add id to dependence]
-      fetch(API_ROOT+"/get?nid="+nid).then(
+      fetch(API_ROOT+"/get?nid="+nid+"&token="+getToken()).then(
         res => res.json()
       ).then(
         res => {
@@ -41,7 +41,11 @@ function Editor() {
             setCtime(res['content'][0]);
             setMtime(res['content'][1]);
             setText(res['content'][2]);
-            setState(res['content'][3]);
+            setState(res['content'][4]);
+            setLoading(false);
+          }
+          else {
+            setState(res['error']);
             setLoading(false);
           }
         }
@@ -145,6 +149,7 @@ function Editor() {
     if (window.confirm('Are you sure to delete?')) {
       let formData = new FormData();
       formData.append('nid', id);
+      formData.append('token', getToken());
       fetch(API_ROOT+"/delete", {
         method: "POST",
         body: formData,
@@ -152,7 +157,12 @@ function Editor() {
         res => res.json()
       ).then(
         res => {
-          history.push("/");
+          if (res['success']) {
+            history.push("/");
+          }
+          else {
+            alert(res['error']);
+          }
         }
       );
     }
@@ -189,7 +199,7 @@ function Editor() {
   function render_editor(state) {
     if (state === 0) return (<textarea ref={textareaRef} onKeyDown={textarea_onkeydown_fixtab} onChange={handleChange} value={text} />);
     else if (state === 1) return (<MarkdownRender className="markdown" source={text}/>);
-    else return "error";
+    else return state;
   }
 
   if (loading) {

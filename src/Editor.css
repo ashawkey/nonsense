@@ -45,9 +45,11 @@
 .delete-button:hover {
     color: #770086;
     text-shadow: 3px 3px 2px rgb(255, 160, 242);
+    cursor: pointer;
 }
 
 .state-button:hover {
     color: #770086;
     text-shadow: 3px 3px 2px rgb(255, 160, 242);
+    cursor: pointer;
 }
