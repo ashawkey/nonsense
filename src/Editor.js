@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {useParams} from "react-router-dom";
 import {useHistory} from "react-router-dom";
 import {Prompt} from "react-router";
@@ -17,6 +17,8 @@ function Editor() {
   const [state, setState] = useState(0); // 0 = edit, 1 = view
   const [id, setId] = useState('-1');
 
+  const textareaRef = useRef(null);
+  const [cursorPosition, setCursorPosition] = useState(0);
   const history = useHistory();
   const {nid} = useParams();
 
@@ -160,9 +162,17 @@ function Editor() {
   function textarea_onkeydown_fixtab(event) {
     if (event.keyCode === 9) {
       event.preventDefault();
-      setText(text.substring(0, event.target.selectionStart) + '    ' + text.substring(event.target.selectionEnd));
+      setText(text.substring(0, textareaRef.current.selectionStart) + '    ' + text.substring(textareaRef.current.selectionEnd));
+      setCursorPosition(textareaRef.current.selectionStart);
     }
   }
+  
+  useEffect(() => {
+    if (textareaRef.current != null){
+      textareaRef.current.selectionStart = cursorPosition + 4;
+      textareaRef.current.selectionEnd = cursorPosition + 4;
+    }
+  }, [cursorPosition]);
 
   function render_state_button(state) {
     if (state === 0) return "edit";
@@ -177,7 +187,7 @@ function Editor() {
   }
 
   function render_editor(state) {
-    if (state === 0) return (<textarea onKeyDown={textarea_onkeydown_fixtab} onChange={handleChange} value={text} />);
+    if (state === 0) return (<textarea ref={textareaRef} onKeyDown={textarea_onkeydown_fixtab} onChange={handleChange} value={text} />);
     else if (state === 1) return (<MarkdownRender className="markdown" source={text}/>);
     else return "error";
   }
