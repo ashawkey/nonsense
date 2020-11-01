@@ -1,33 +1,39 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
+import InfiniteScroll from 'react-infinite-scroller';
 import {API_ROOT} from "./const";
 import Flow from "./Flow"
 import {getToken} from './utils';
 
-function Home(){
-  const [meta, setMeta] = useState([]);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(()=>{
-    fetch(API_ROOT+"/meta?token="+getToken()).then(
+function Home(){
+  const [items, setItems] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
+
+  function loadMore(page) {
+    fetch(API_ROOT+"/meta?token="+getToken()+"&page="+page).then(
       res => res.json()
     ).then(
       res => {
-        setMeta(res);
-        setLoading(false);
+        setItems(items.concat(res['meta']));
+        setHasMore(res['hasMore']);
       }
-    );
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="loading"> ☪ </div>
     );
   }
 
+  const loader = <div className="loading" key={0}> ☪ </div>; // key: fix InfiniteScroll unique key warning
+
   return (
     <div className="Home">
-      <Flow meta={meta} />
+      <InfiniteScroll
+        pageStart={0}
+        loadMore={loadMore}
+        hasMore={hasMore}
+        loader={loader}
+      >
+        <Flow items={items} />
+      </InfiniteScroll>
     </div>
+    
   );
 }
 

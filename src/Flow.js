@@ -7,7 +7,7 @@ import {convertTime, padNumber, truncateString} from './utils'
 function Flow(props) {
   return (
     <div className="flow">
-      {props.meta.map((value, index) => (
+      {props.items.map((value, index) => (
         <FlowItem value={value} key={index} />
       ))}
     </div>

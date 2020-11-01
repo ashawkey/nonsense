@@ -22,7 +22,7 @@ function SearchResults(){
 
   return (
       <div className="search-results">
-        <Flow meta={results} />
+        <Flow items={results} />
       </div>
   );
 }

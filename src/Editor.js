@@ -7,6 +7,11 @@ import {API_ROOT} from "./const";
 import "./Editor.css"
 import MarkdownRender from './Markdown';
 
+import AceEditor from "react-ace";
+import "ace-builds/src-noconflict/mode-markdown";
+import "ace-builds/src-noconflict/theme-textmate";
+import "ace-builds/src-noconflict/ext-language_tools"
+
 
 function Editor() {
   const [text, setText] = useState('');
@@ -14,7 +19,7 @@ function Editor() {
   const [mtime, setMtime] = useState(0);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState('saved');
-  const [state, setState] = useState(0); // 0 = edit, 1 = view
+  const [state, setState] = useState(2); // 0 = raw, 1 = view, 2 = ace
   const [id, setId] = useState('-1');
 
   const textareaRef = useRef(null);
@@ -37,11 +42,12 @@ function Editor() {
         res => res.json()
       ).then(
         res => {
+          console.log(res);
           if (res['success']) {
             setCtime(res['content'][0]);
             setMtime(res['content'][1]);
             setText(res['content'][2]);
-            setState(res['content'][4]);
+            setState(res['content'][3]);
             setLoading(false);
           }
           else {
@@ -138,9 +144,14 @@ function Editor() {
     setSaving('unsaved');
   }
 
-  function handlePreview(event) {
+  function handleAceChange(value) {
+    setText(value);
+    setSaving('unsaved');
+  }
+
+  function handleChangeState(event) {
     event.preventDefault();
-    setState(1 - state);
+    setState((state + 1) % 3);
     setSaving('unsaved');
   }
 
@@ -185,8 +196,9 @@ function Editor() {
   }, [cursorPosition]);
 
   function render_state_button(state) {
-    if (state === 0) return "edit";
+    if (state === 0) return "raw";
     else if (state === 1) return "view";
+    else if (state === 2) return "ace";
     else return "error";
   }
 
@@ -197,9 +209,51 @@ function Editor() {
   }
 
   function render_editor(state) {
-    if (state === 0) return (<textarea ref={textareaRef} onKeyDown={textarea_onkeydown_fixtab} onChange={handleChange} value={text} />);
-    else if (state === 1) return (<MarkdownRender className="markdown" source={text}/>);
-    else return state;
+    if (state === 0) 
+      return (
+        <textarea 
+          ref={textareaRef} 
+          onKeyDown={textarea_onkeydown_fixtab} 
+          onChange={handleChange} 
+          value={text} 
+          style={{
+            height: window.innerHeight - 200, // header is about 200 pixels height
+          }}
+        />
+      );
+    else if (state === 1) 
+      return (
+        <MarkdownRender 
+          className="markdown" 
+          source={text}
+        />
+      );
+    else if (state === 2) 
+      return (
+        <AceEditor
+          mode="markdown"
+          theme="textmate"
+          name="editor"
+          value={text}
+          onChange={handleAceChange}
+          height={window.innerHeight - 200}
+          width={"100%"}
+          showGutter={true}
+          showPrintMargin={false}
+          highlightActiveLine={true}
+          placeholder=""
+          fontSize={16}
+          setOptions={{
+            enableBasicAutocompletion: true,
+            enableLiveAutocompletion: true,
+            enableSnippets: false,
+            showLineNumbers: false,
+            tabSize: 2,
+          }}
+        />
+      );
+    else 
+      return state;
   }
 
   if (loading) {
@@ -213,7 +267,7 @@ function Editor() {
         <div className='date'>
           | <span> {(id === '-1') ? 'new' : padNumber(id, 6)} </span>
           | <span> {convertTime(mtime)} </span>
-          | <span onClick={handlePreview} className='state-button'> {render_state_button(state)} </span>
+          | <span onClick={handleChangeState} className='state-button'> {render_state_button(state)} </span>
           | <span onClick={handleDelete} className='delete-button'> delete </span>
           | <span> {render_saving_button(saving)} </span> |
         </div>
