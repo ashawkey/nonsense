@@ -42,12 +42,11 @@ function Editor() {
         res => res.json()
       ).then(
         res => {
-          console.log(res);
           if (res['success']) {
             setCtime(res['content'][0]);
             setMtime(res['content'][1]);
             setText(res['content'][2]);
-            setState(res['content'][3]);
+            setState(res['content'][4]);
             setLoading(false);
           }
           else {
@@ -236,7 +235,7 @@ function Editor() {
           name="editor"
           value={text}
           onChange={handleAceChange}
-          height={window.innerHeight - 200}
+          height={(window.innerHeight - 200).toString() + 'px'} // fix Ace height requires string warning
           width={"100%"}
           showGutter={true}
           showPrintMargin={false}
