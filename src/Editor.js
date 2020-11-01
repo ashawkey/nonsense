@@ -248,6 +248,7 @@ function Editor() {
             enableSnippets: false,
             showLineNumbers: false,
             tabSize: 2,
+            fontFamily: "Consolas,'Microsoft Yahei','Helvetica Neue', Helvetica, Arial, sans-serif"
           }}
         />
       );
