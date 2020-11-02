@@ -9,7 +9,7 @@ import MarkdownRender from './Markdown';
 
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-markdown";
-import "ace-builds/src-noconflict/theme-textmate";
+import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/ext-language_tools"
 
 
@@ -231,13 +231,13 @@ function Editor() {
       return (
         <AceEditor
           mode="markdown"
-          theme="textmate"
+          theme="github"
           name="editor"
           value={text}
           onChange={handleAceChange}
           height={(window.innerHeight - 200).toString() + 'px'} // fix Ace height requires string warning
           width={"100%"}
-          showGutter={true}
+          showGutter={window.screen.width <= 600 ? false : true}
           showPrintMargin={false}
           highlightActiveLine={true}
           placeholder=""
