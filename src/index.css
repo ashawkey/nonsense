@@ -2,13 +2,22 @@ body {
   background-color: #ffffff;
   max-width: 70em;
   margin: 0 auto;
+  /* hide scroll bar */ 
+  overflow: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+}
+
+/* hide scroll bar */ 
+body::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
 }
 
 @keyframes spin { 100% { transform:rotate(360deg); } }
 
 .loading {
   text-align: center;
-  font-size: 30px;
+  font-size: 20px;
   animation: spin 2s linear infinite;
 }
 

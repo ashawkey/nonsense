@@ -20,7 +20,7 @@ function Home(){
     );
   }
 
-  const loader = <div className="loading" key={0}> ☪ </div>; // key: fix InfiniteScroll unique key warning
+  const loader = <div className="loading" key={0}> <span role="img" aria-label="loading">🌒</span> </div>; // key: fix InfiniteScroll unique key warning
 
   return (
     <div className="Home">

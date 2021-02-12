@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import {useParams} from "react-router-dom";
 import {useHistory} from "react-router-dom";
 import {Prompt} from "react-router";
-import {convertTime, padNumber, getToken} from './utils'
+import {convertTime, getToken} from './utils'
 import {API_ROOT} from "./const";
 import "./Editor.css"
 import MarkdownRender from './Markdown';
@@ -18,7 +18,7 @@ function Editor() {
   const [ctime, setCtime] = useState(0);
   const [mtime, setMtime] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState('saved');
+  const [saving, setSaving] = useState('🟢');
   const [state, setState] = useState(2); // 0 = raw, 1 = view, 2 = ace
   const [id, setId] = useState('-1');
 
@@ -68,14 +68,14 @@ function Editor() {
 
   // leave tab warning
   useEffect(() => {
-    window.addEventListener('beforeunload', handleBeforeunload);
+    window.addEventListener('beforeunload', handleBeforeUnload);
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeunload);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
     }
   });
 
-  function handleBeforeunload(event) {
-    if (saving === 'failed' || saving === 'unsaved' || saving === 'saving') {
+  function handleBeforeUnload(event) {
+    if (saving === '🔴' || saving === '🟠' || saving === '🟡') {
       event.preventDefault();
       // chrome has banned custom message, so this will not show.
       return event.returnValue = 'Draft unsaved';
@@ -83,8 +83,8 @@ function Editor() {
   }
 
   function checkSave() {
-    if (saving === 'unsaved') {
-      setSaving('saving');
+    if (saving === '🟠') {
+      setSaving('🟡');
 
       if (id === '-1') {
         // post new 
@@ -100,16 +100,16 @@ function Editor() {
           res => res.json()
         ).catch(
           error => {
-            setSaving('failed');
-            console.error('Post error: ', error)
+            console.error('Post error: ', error);
+            setSaving('🔴');
           }
         ).then(
           res => {
+            console.log(res);
             setId(res['nid'].toString());
-            setSaving('saved');
+            setSaving('🟢');
           }
         );
-
       }
       else {
         // update current
@@ -125,12 +125,12 @@ function Editor() {
           res => res.json()
         ).catch(
           error => {
-            setSaving('failed');
-            console.error('Update error: ', error)
+            console.error('Update error: ', error);
+            setSaving('🔴');
           }
         ).then(
           res => {
-            setSaving('saved');
+            setSaving('🟢');
           }
         );
       }
@@ -140,18 +140,18 @@ function Editor() {
   function handleChange(event) {
     event.preventDefault();
     setText(event.target.value);
-    setSaving('unsaved');
+    setSaving('🟠');
   }
 
   function handleAceChange(value) {
     setText(value);
-    setSaving('unsaved');
+    setSaving('🟠');
   }
 
-  function handleChangeState(event) {
+  function handleChangeState(event, state) {
     event.preventDefault();
-    setState((state + 1) % 3);
-    setSaving('unsaved');
+    setState(state);
+    setSaving('🟠');
   }
 
   function handleDelete(event) {
@@ -178,6 +178,11 @@ function Editor() {
     }
   }
 
+  function handleSave(event) {
+    event.preventDefault();
+    setSaving('🟠');
+  }
+
   // fix tab from unfocus to insert 4 spaces
   function textarea_onkeydown_fixtab(event) {
     if (event.keyCode === 9) {
@@ -195,15 +200,24 @@ function Editor() {
   }, [cursorPosition]);
 
   function render_state_button(state) {
-    if (state === 0) return "raw";
-    else if (state === 1) return "view";
-    else if (state === 2) return "ace";
-    else return "error";
+    // mobile phone adaptation
+    if (window.screen.width <= 600) {
+      if (state === 0) return "R";
+      else if (state === 1) return "V";
+      else if (state === 2) return "A";
+      else return "E";
+    }
+    else {
+      if (state === 0) return "Raw";
+      else if (state === 1) return "View";
+      else if (state === 2) return "Ace";
+      else return "Error";
+    }
   }
 
   function render_saving_button(saving) {
-    if (saving === 'failed') return (<span style={{color: 'red'}}> failed </span>);
-    else if (saving === 'saved') return (<span style={{color: 'green'}}> saved </span>);
+    if (saving === '🔴') return (<span role="img" aria-label="failed"> 🔴 </span>);
+    else if (saving === '🟢') return (<span role="img" aria-label="saved"> 🟢 </span>);
     else return saving;
   }
 
@@ -246,7 +260,7 @@ function Editor() {
             enableBasicAutocompletion: true,
             enableLiveAutocompletion: true,
             enableSnippets: false,
-            showLineNumbers: false,
+            showLineNumbers: window.screen.width <= 600 ? false : true,
             tabSize: 2,
             fontFamily: "Consolas,'Microsoft Yahei','Helvetica Neue', Helvetica, Arial, sans-serif"
           }}
@@ -258,21 +272,23 @@ function Editor() {
 
   if (loading) {
     return (
-      <div className="loading"> ☪ </div>
+      <div className="loading"> <span role="img" aria-label="loading">🌒</span> </div>
     );
   }
 
   return (
       <div className="editor">
         <div className='date'>
-          | <span> {(id === '-1') ? 'new' : padNumber(id, 6)} </span>
+          {/*| <span> {(id === '-1') ? 'new' : padNumber(id, 6)} </span>*/}
           | <span> {convertTime(mtime)} </span>
-          | <span onClick={handleChangeState} className='state-button'> {render_state_button(state)} </span>
-          | <span onClick={handleDelete} className='delete-button'> delete </span>
-          | <span> {render_saving_button(saving)} </span> |
+          | <span onClick={(e) => {handleChangeState(e, 0)}} className='button'> {render_state_button(0)} </span>
+          | <span onClick={(e) => {handleChangeState(e, 1)}} className='button'> {render_state_button(1)} </span>
+          | <span onClick={(e) => {handleChangeState(e, 2)}} className='button'> {render_state_button(2)} </span>
+          | <span onClick={handleDelete} className='button' role="img" aria-label="delete"> ❌ </span>
+          | <span onClick={handleSave} className='button'> {render_saving_button(saving)} </span> |
         </div>
         {render_editor(state)}
-        <Prompt message='Draft unsaved, are you sure to leave?' when={saving === 'failed' || saving === 'unsaved' || saving === 'saving'}/>
+        <Prompt message='Draft unsaved, are you sure to leave?' when={saving === '🔴' || saving === '🟠' || saving === '🟡'}/>
       </div>
   );
 }

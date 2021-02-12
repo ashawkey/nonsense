@@ -22,7 +22,7 @@ function SearchBar() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <input type="text" value={keyword} placeholder="Search" onChange={handleChange}/>
+      <input type="text" value={keyword} placeholder="search" onChange={handleChange}/>
     </form>
   )
 }

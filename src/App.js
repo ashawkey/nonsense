@@ -16,9 +16,9 @@ function App() {
     <div className="App">
       <HashRouter>
         <div className="header"> 
-          <div className='title'> <Link to="/"> NoNSeNSe </Link> </div>
-          <div className="new-button"> <Link to={"/edit/-1"}> ✛ </Link> </div>
-          <div className="login-button"> <Link to={"/login"}> ❖ </Link> </div>
+          <div className='title'> <Link to="/"> N<span style={{fontSize: '20px'}} role="img" aria-label="o">🌑</span>NSeNSe </Link> </div>
+          <div className="new-button"> <Link to={"/edit/-1"}> + </Link> </div>
+          <div className="login-button"> <Link to={"/login"}> ⚙ </Link> </div>
           <div className='search-bar'> <SearchBar/> </div>
         </div>
         <div className="content">
@@ -48,11 +48,8 @@ function App() {
           <hr className="fancy-line" />
         </div>
         <ScrollToTop showUnder={160}>
-          <span className='up-arrow'> ⮭ </span>
+          <span className='up-arrow' role="img" aria-label="up"> 🌠 </span>
         </ScrollToTop>
-        <div className="footer"> 
-          @ <a href='https://github.com/ashawkey'> hawkey </a>
-        </div>
       </HashRouter>
     </div>
   );
