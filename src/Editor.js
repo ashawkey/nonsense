@@ -11,6 +11,8 @@ import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-markdown";
 import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/ext-language_tools"
+//import "ace-builds/src-noconflict/keybinding-vim";
+import "ace-builds/src-noconflict/keybinding-vscode";
 
 
 function Editor() {
@@ -255,6 +257,7 @@ function Editor() {
           showPrintMargin={false}
           highlightActiveLine={true}
           placeholder=""
+          keyboardHandler="vscode"
           fontSize={16}
           setOptions={{
             enableBasicAutocompletion: true,
