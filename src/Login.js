@@ -33,7 +33,6 @@ function Login() {
       <form onSubmit={handleSubmit} className="login-form">
         <div className='title'> Make any sense ? </div>
         <input type="text" value={token} placeholder="nonsense" maxLength="99" onChange={handleTokenChange} />
-        
       </form>
     </div>
   );

@@ -5,7 +5,8 @@ import {Prompt} from "react-router";
 import {convertTime, getToken} from './utils'
 import {API_ROOT} from "./const";
 import "./Editor.css"
-import MarkdownRender from './Markdown';
+//import MarkdownRender from './Markdown';
+import { MilkdownEditor } from './MilkdownEditor';
 
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-markdown";
@@ -17,15 +18,17 @@ import "ace-builds/src-noconflict/keybinding-vscode";
 
 function Editor() {
   const [text, setText] = useState('');
-  const [ctime, setCtime] = useState(0);
+  //const [ctime, setCtime] = useState(0);
   const [mtime, setMtime] = useState(0);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState('🟢');
-  const [state, setState] = useState(2); // 0 = raw, 1 = view, 2 = ace
+  const [state, setState] = useState(1); // 0 = raw, 1 = milk, 2 = ace
   const [id, setId] = useState('-1');
 
+  // textarea cursor location (fix tab)
   const textareaRef = useRef(null);
   const [cursorPosition, setCursorPosition] = useState(0);
+
   const history = useHistory();
   const {nid} = useParams();
 
@@ -33,7 +36,7 @@ function Editor() {
   useEffect(() => {
     if (nid === '-1') {
       setId(nid);
-      setCtime(Date.now() / 1000);
+      //setCtime(Date.now() / 1000);
       setMtime(Date.now() / 1000);
       setText('');
       setLoading(false);
@@ -45,7 +48,7 @@ function Editor() {
       ).then(
         res => {
           if (res['success']) {
-            setCtime(res['content'][0]);
+            //setCtime(res['content'][0]);
             setMtime(res['content'][1]);
             setText(res['content'][2]);
             setState(res['content'][4]);
@@ -150,6 +153,12 @@ function Editor() {
     setSaving('🟠');
   }
 
+  function handleMilkdownChange(getMarkdown) {
+    const result = getMarkdown();
+    setText(result);
+    setSaving('🟠');
+  }
+
   function handleChangeState(event, state) {
     event.preventDefault();
     setState(state);
@@ -205,13 +214,13 @@ function Editor() {
     // mobile phone adaptation
     if (window.screen.width <= 600) {
       if (state === 0) return "R";
-      else if (state === 1) return "V";
+      else if (state === 1) return "M";
       else if (state === 2) return "A";
       else return "E";
     }
     else {
       if (state === 0) return "Raw";
-      else if (state === 1) return "View";
+      else if (state === 1) return "Milk";
       else if (state === 2) return "Ace";
       else return "Error";
     }
@@ -238,10 +247,11 @@ function Editor() {
       );
     else if (state === 1) 
       return (
-        <MarkdownRender 
-          className="markdown" 
-          source={text}
-        />
+        <MilkdownEditor content={text} onChange={handleMilkdownChange} />
+        // <MarkdownRender 
+        //   className="markdown" 
+        //   source={text}
+        // />
       );
     else if (state === 2) 
       return (
