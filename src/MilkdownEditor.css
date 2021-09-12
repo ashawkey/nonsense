@@ -1,8 +1,8 @@
 .milkdown {
-  max-width: unset; /* override */
+  max-width: unset !important; /* override */
   width: 100%;
-  padding: 5px;
-  font-family: 'Merriweather', serif;
+  padding: 5px !important;
+  font-family: 'Merriweather', serif !important;
 }
 
 code {
