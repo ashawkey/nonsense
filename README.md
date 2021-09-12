@@ -5,7 +5,7 @@ React Frontend for Nonsense, a minimal online note App.
 Hosted by [listener](https://github.com/ashawkey/listener.git) @ hawia project.
 
 
-### [Demo](https://hawia.xyz/nonsense/)
+### [Demo](https://kiui.moe/nonsense/)
 
 (You should create your own channel in ❖ first)
 
