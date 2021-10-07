@@ -5,9 +5,7 @@ React Frontend for Nonsense, a minimal online note App.
 Hosted by [listener](https://github.com/ashawkey/listener.git) @ hawia project.
 
 
-### [Demo](https://kiui.moe/nonsense/)
-
-(You should create your own channel in ❖ first)
+### [>>> Demo <<<](https://kiui.moe/nonsense/)
 
 
 ##### Home page
@@ -21,15 +19,23 @@ Hosted by [listener](https://github.com/ashawkey/listener.git) @ hawia project.
 
 ### Develop
 
-* change `API_ROOT` in `const.js` to local port
+* change `API_ROOT` to `API_ROOT_DEV` in `const.js`.
 * ```npm run start```
 
 ### Deploy
 
-* change `API_ROOT` in `const.js` to remote server port
+#### install the built version
+* clone the gh-pages branch: `git clone -b gh-pages https://github.com/ashawkey/nonsense.git`
+
+* change `API_ROOT` in `config.js` to your own remote server port.
+* use nginx to serve them.
+
+#### build by yourself
+* change `API_ROOT` in `public/config.js` to your own remote server port.
 * ```npm run build```
-* copy built files to remote server and use nginx to hold them / for gh-pages jsut run ```npm run deploy```
+* use nginx to serve them / for gh-pages jsut run ```npm run deploy```.
 
 
 ### Change Log
 * [2021-9-12] replace former markdown editor with [Milkdown](https://github.com/Saul-Mirone/milkdown).
+* [2021-10-7] moved config file to public, so you can directly change `ROOT_API` for the built version.
