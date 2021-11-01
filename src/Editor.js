@@ -39,6 +39,7 @@ function Editor() {
       //setCtime(Date.now() / 1000);
       setMtime(Date.now() / 1000);
       setText('');
+      document.title = "NoNSeNSe";
       setLoading(false);
     }
     else {
@@ -52,6 +53,7 @@ function Editor() {
             setMtime(res['content'][1]);
             setText(res['content'][2]);
             setState(res['content'][4]);
+            document.title = "NoNSeNSe | " + res['content'][2].substring(0, 20);
             setLoading(false);
           }
           else {
@@ -61,10 +63,68 @@ function Editor() {
         }
       );
     }
+    return () => {
+      // leave editor, reset title.
+      document.title = "NoNSeNSe";
+    }
   }, [nid]);
 
   // check save every 1s
   useEffect(() => {
+    function checkSave() {
+      if (saving === '🟠') {
+        setSaving('🟡');
+  
+        if (id === '-1') {
+          // post new 
+          let formData = new FormData();
+          formData.append('token', getToken());
+          formData.append('body', text);
+          formData.append('state', state);
+  
+          fetch(API_ROOT+"/post", {
+            method: "POST",
+            body: formData,
+          }).then(
+            res => res.json()
+          ).catch(
+            error => {
+              console.error('Post error: ', error);
+              setSaving('🔴');
+            }
+          ).then(
+            res => {
+              console.log(res);
+              setId(res['nid'].toString());
+              setSaving('🟢');
+            }
+          );
+        }
+        else {
+          // update current
+          let formData = new FormData();
+          formData.append('nid', id);
+          formData.append('body', text);
+          formData.append('state', state);
+    
+          fetch(API_ROOT+"/update", {
+            method: "POST",
+            body: formData,
+          }).then(
+            res => res.json()
+          ).catch(
+            error => {
+              console.error('Update error: ', error);
+              setSaving('🔴');
+            }
+          ).then(
+            res => {
+              setSaving('🟢');
+            }
+          );
+        }
+      }
+    }
     const saver = setInterval(checkSave, 1000);
     return () => {
       clearInterval(saver);
@@ -73,74 +133,21 @@ function Editor() {
 
   // leave tab warning
   useEffect(() => {
+    // define inside to avoid `missing dependency` warning.
+    function handleBeforeUnload(event) {
+      if (saving === '🔴' || saving === '🟠' || saving === '🟡') {
+        event.preventDefault();
+        // chrome has banned custom message, so this will not show.
+        return event.returnValue = 'Draft unsaved';
+      }
+    }
     window.addEventListener('beforeunload', handleBeforeUnload);
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     }
-  });
+  }, [saving]);
 
-  function handleBeforeUnload(event) {
-    if (saving === '🔴' || saving === '🟠' || saving === '🟡') {
-      event.preventDefault();
-      // chrome has banned custom message, so this will not show.
-      return event.returnValue = 'Draft unsaved';
-    }
-  }
-
-  function checkSave() {
-    if (saving === '🟠') {
-      setSaving('🟡');
-
-      if (id === '-1') {
-        // post new 
-        let formData = new FormData();
-        formData.append('token', getToken());
-        formData.append('body', text);
-        formData.append('state', state);
-
-        fetch(API_ROOT+"/post", {
-          method: "POST",
-          body: formData,
-        }).then(
-          res => res.json()
-        ).catch(
-          error => {
-            console.error('Post error: ', error);
-            setSaving('🔴');
-          }
-        ).then(
-          res => {
-            console.log(res);
-            setId(res['nid'].toString());
-            setSaving('🟢');
-          }
-        );
-      }
-      else {
-        // update current
-        let formData = new FormData();
-        formData.append('nid', id);
-        formData.append('body', text);
-        formData.append('state', state);
   
-        fetch(API_ROOT+"/update", {
-          method: "POST",
-          body: formData,
-        }).then(
-          res => res.json()
-        ).catch(
-          error => {
-            console.error('Update error: ', error);
-            setSaving('🔴');
-          }
-        ).then(
-          res => {
-            setSaving('🟢');
-          }
-        );
-      }
-    }
-  }
 
   function handleChange(event) {
     event.preventDefault();
@@ -179,6 +186,7 @@ function Editor() {
       ).then(
         res => {
           if (res['success']) {
+            document.title = "NoNSeNSe";
             history.push("/");
           }
           else {

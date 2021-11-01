@@ -37,5 +37,6 @@ Hosted by [listener](https://github.com/ashawkey/listener.git) @ hawia project.
 
 
 ### Change Log
-* [2021-9-12] replace former markdown editor with [Milkdown](https://github.com/Saul-Mirone/milkdown).
+* [2021-11-1] change document title at editor page & add random emojis.
+* [2021-9-12] replace the former markdown editor with [Milkdown](https://github.com/Saul-Mirone/milkdown).
 * [2021-10-7] moved config file to public, so you can directly change `ROOT_API` for the built version.
