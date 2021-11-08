@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {useHistory} from "react-router-dom";
 import "./Login.css";
+import {isStringValid} from './utils';
 
 function Login() {
 
@@ -17,15 +18,16 @@ function Login() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    if (token !== '') {
+    if (token === '') setToken('nonsense');
+    if (token.length > 100) {
+      alert('Channel name too long!');
+    } else if (!isStringValid(token)) {
+      alert('Channel name contains invalid characters! Only [0-9a-zA-Z_.-] are allowed.');
+    } else {
       localStorage['nonsense_token'] = token;
       alert("Hello, "+token+"!");
+      history.push('/');      
     }
-    else {
-      localStorage['nonsense_token'] = 'nonsense';
-      alert("Hello, nonsense!");
-    }
-    history.push('/');
   }
     
   return (
