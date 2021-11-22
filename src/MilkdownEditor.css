@@ -5,6 +5,34 @@
   font-family: 'Merriweather', serif !important;
 }
 
+blockquote > * {
+  margin: 5px 0px !important;
+}
+
+h1 {
+  font-size: 1.5rem !important;
+  line-height: 1.5em !important;
+  margin: 5px 0px !important;
+  font-weight: bold !important;
+}
+
+h2 {
+  font-size: 1.3rem !important;
+  line-height: 1.5em !important;
+  font-weight: bold !important;
+}
+
+h3 {
+  font-size: 1.1rem !important;
+  line-height: 1.25em !important;
+  font-weight: bold !important;
+}
+
+h4, h5, h6 {
+  font-size: 1rem !important;
+  font-weight: bold !important;
+}
+
 code {
   background-color: #ECEFF4; /* silly fix... */
 }

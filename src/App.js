@@ -10,13 +10,30 @@ import Editor from "./Editor";
 import SearchBar from "./SearchBar";
 import SearchResults from "./SearchResults";
 
-
 function App() {
+  const emojis = ['💗', '🖤', '💔', '🧡', '💛', '💚', '💙', '💜', '🤎', '🤍', 
+                  '💫', '🕳', '🌸', '🍀', '🍁', 
+                  '🐚', '🐞',
+                  '🥝', '🍉', '🍊', '🥥', '🍄', 
+                  '🍩', '🍭', '🎂', '🍬', '🍥', '🍪', '🧊', '🌍', '🌎', '🌏', '🧭', 
+                  '🌅', '🎡', '🌑', '🌕', '🪐', '🌌', '🎃', '🎆', '🎨', '💿', '📀', '🏮', 
+                  '🧫', '💊', '🩸', '💠', 
+                ];
+  
+  function get_random_title() {
+    const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+    return (
+      <div>
+        N<span style={{fontSize: '20px'}} role="img" aria-label="o">{emoji}</span>NSeNSe
+      </div>
+    );
+  }
+
   return (
     <div className="App">
       <HashRouter>
         <div className="header"> 
-          <div className='title'> <Link to="/"> N<span style={{fontSize: '20px'}} role="img" aria-label="o">🌑</span>NSeNSe </Link> </div>
+          <div className='title'> <Link to="/"> {get_random_title()} </Link> </div>
           <div className="new-button"> <Link to={"/edit/-1"}> + </Link> </div>
           <div className="login-button"> <Link to={"/login"}> ⚙ </Link> </div>
           <div className='search-bar'> <SearchBar/> </div>

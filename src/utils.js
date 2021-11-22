@@ -27,4 +27,8 @@ function getToken() {
   return localStorage['nonsense_token'] || 'nonsense';
 }
 
-export {convertTime, padNumber, truncateString, getToken};
+function isStringValid(s) {
+  return /^[0-9a-zA-Z_.-]+$/.test(s);
+}
+
+export {convertTime, padNumber, truncateString, getToken, isStringValid};
