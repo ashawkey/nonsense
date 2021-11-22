@@ -38,7 +38,7 @@ function Editor() {
       setId(nid);
       //setCtime(Date.now() / 1000);
       setMtime(Date.now() / 1000);
-      setText('');
+      setText(''); // TODO: milkdown won't clear...
       setLoading(false);
     }
     else {
@@ -110,7 +110,6 @@ function Editor() {
           }
         ).then(
           res => {
-            console.log(res);
             setId(res['nid'].toString());
             setSaving('🟢');
           }
